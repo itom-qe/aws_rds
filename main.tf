@@ -28,15 +28,15 @@ module "vpc" {
 
 
 resource "aws_db_subnet_group" "rds" {
-  name       = "test_cpg_db_subnet_group"
+  name       = "test_cpg_db_subnet_group-${random_string.uniq_str.result}"
   subnet_ids = module.vpc.public_subnets
 
   tags = {
-    Name = "test_cpg_db_subnet_group"
+    Name = "test_cpg_db_subnet_group-${random_string.uniq_str.result}"
   }
 }
 resource "aws_security_group" "rds" {
-  name   = "test_cpg_rds"
+  name   = "test_cpg_rds-${random_string.uniq_str.result}"
   vpc_id = module.vpc.vpc_id
 
   ingress {
@@ -54,12 +54,12 @@ resource "aws_security_group" "rds" {
   }
 
   tags = {
-    Name = "test_rds"
+    Name = "test_rds-${random_string.uniq_str.result}"
   }
 }
 
 resource "aws_db_parameter_group" "rds" {
-  name   = "test-cpg-aws-db-parameter-group"
+  name   = "test-cpg-aws-db-parameter-group-${random_string.uniq_str.result}"
   family = "mysql5.7"
 
    parameter {
@@ -69,7 +69,7 @@ resource "aws_db_parameter_group" "rds" {
 }
 
 resource "aws_db_instance" "test_db_instance" {
-  identifier             = "test-cpg-aws-db-instance"
+  identifier             = "test-cpg-aws-db-instance-${random_string.uniq_str.result}"
   instance_class         = "db.t3.micro"
   allocated_storage      = 5
   engine                 = "mysql"
@@ -81,4 +81,9 @@ resource "aws_db_instance" "test_db_instance" {
   parameter_group_name   = aws_db_parameter_group.rds.name
   publicly_accessible    = true
   skip_final_snapshot    = true
+}
+  
+resource "random_string" "uniq_str" {
+  length  = 8
+  special = false
 }
