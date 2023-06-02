@@ -28,15 +28,15 @@ module "vpc" {
 
 
 resource "aws_db_subnet_group" "rds" {
-  name       = "test_cpg_db_subnet_group${random_id.id.hex}"
+  name       = "test_cpg_db_subnet_group${random_id.id}"
   subnet_ids = module.vpc.public_subnets
 
   tags = {
-    Name = "test_cpg_db_subnet_group${random_id.id.hex}"
+    Name = "test_cpg_db_subnet_group${random_id.id}"
   }
 }
 resource "aws_security_group" "rds" {
-  name   = "test_cpg_rds${random_id.id.hex}"
+  name   = "test_cpg_rds${random_id.id}"
   vpc_id = module.vpc.vpc_id
 
   ingress {
@@ -54,12 +54,12 @@ resource "aws_security_group" "rds" {
   }
 
   tags = {
-    Name = "test_rds${random_id.id.hex}"
+    Name = "test_rds${random_id.id}"
   }
 }
 
 resource "aws_db_parameter_group" "rds" {
-  name   = "test-cpg-aws-db-parameter-group${random_id.id.hex}"
+  name   = "test-cpg-aws-db-parameter-group${random_id.id}"
   family = "mysql5.7"
 
    parameter {
@@ -69,7 +69,7 @@ resource "aws_db_parameter_group" "rds" {
 }
 
 resource "aws_db_instance" "test_db_instance" {
-  identifier             = "test-cpg-aws-db-instance${random_id.id.hex}"
+  identifier             = "test-cpg-aws-db-instance${random_id.id}"
   instance_class         = "db.t3.micro"
   allocated_storage      = 5
   engine                 = "mysql"
